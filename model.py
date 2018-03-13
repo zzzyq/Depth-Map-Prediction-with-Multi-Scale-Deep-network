@@ -29,12 +29,6 @@ class coarseNet(nn.Module):
         x = x.view(-1, 55, 74)
         return x
 
-    def num_flat_features(self, x):
-        size = x.size()[1:]  # all dimensions except the batch dimension
-        num_features = 1
-        for s in size:
-            num_features *= s
-        return num_features
     
     def _initialize_weights(self):
         for m in self.modules():
@@ -65,13 +59,7 @@ class fineNet(nn.Module):
         x = self.conv2(x)
         x = self.conv3(x)
         return x
-
-    def num_flat_features(self, x):
-        size = x.size()[1:]  # all dimensions except the batch dimension
-        num_features = 1
-        for s in size:
-            num_features *= s
-        return num_features
+    
     
     def _initialize_weights(self):
         for m in self.modules():
