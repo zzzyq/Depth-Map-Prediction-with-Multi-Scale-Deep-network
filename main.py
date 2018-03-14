@@ -13,8 +13,8 @@ dataset = data(root_dir='./',transform=transforms.Compose([
                                                    Rescale((input_height, input_width),(output_height, output_width)),
                                                    ToTensor()]))
 dataset_loader = DataLoader(dataset, batch_size=4, shuffle=True, num_workers=0)
-net = coarseNet()
-optimizer = optim.SGD(net.parameters(), lr=0.01)
+coarse_net = coarseNet()
+optimizer = optim.SGD(coarse_net.parameters(), lr=0.01)
 criterion = nn.MSELoss()
 
 def train(model, criterion, optimizer,n_epochs,print_every):
@@ -37,7 +37,7 @@ def train(model, criterion, optimizer,n_epochs,print_every):
                 
             # forward
             outputs = model(inputs)
-            loss = criterion(outputs, labels)
+            loss = criterion(outputs, depths)
             loss += loss.data[0] 
             loss.backward()
             optimizer.step()
@@ -48,4 +48,20 @@ def train(model, criterion, optimizer,n_epochs,print_every):
 
     return losses
 
-loss = train(net,criterion,optimizer,5,1)
+
+def show_img(sample):
+    images, depth = sample['image'], sample['depth']
+    img = Variable(images)
+    output = coarse_net(img)
+    
+    fig=plt.figure()
+    fig.add_subplot(1,3,1)
+    plt.imshow(img.data[0].numpy().transpose((1, 2, 0)))
+    fig.add_subplot(1,3,2)
+    plt.imshow(Variable(depth).data[0].numpy())
+    fig.add_subplot(1,3,3)
+    plt.imshow(output.data[0].numpy())
+    plt.show()
+
+loss = train(coarse_net,criterion,optimizer,5,1)
+show_img(iter(dataset_loader).next())
