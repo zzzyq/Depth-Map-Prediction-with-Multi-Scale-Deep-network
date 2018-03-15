@@ -6,6 +6,19 @@ In the project, we propose to replicate the depth map prediction from a single i
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+## File Explanation
+
+### main.py
+The main function of the project.
+
+### model.py
+The CNN model with coarse net and fine net.
+
+### IO.py
+Handles the input data.
+
+
+
 ### Prerequisites
 
 What things you need to install in your python environment
