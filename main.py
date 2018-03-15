@@ -9,7 +9,7 @@ from tqdm import tqdm
 from model import *
 from IO import *
 
-def train_coarse(model, criterion, optimizer,n_epochs,print_every):
+def train_coarse(model, criterion, optimizer,dataset_loader,n_epochs,print_every):
     start = time.time()
     losses = []
     print("Training for %d epochs..." % n_epochs)
@@ -41,7 +41,7 @@ def train_coarse(model, criterion, optimizer,n_epochs,print_every):
     return losses
 
 
-def train_fine(model, coarse, criterion, optimizer,n_epochs,print_every):
+def train_fine(model, coarse, criterion, optimizer,dataset_loader, n_epochs,print_every):
     start = time.time()
     losses = []
     print("Training for %d epochs..." % n_epochs)
@@ -101,9 +101,9 @@ def main():
     criterion = nn.MSELoss()
     fine_net = fineNet()
     optimizer_fine = optim.SGD(fine_net.parameters(), lr=0.01)
-    #loss = train_coarse(coarse_net,criterion,optimizer_coarse,5,1)
+    loss = train_coarse(coarse_net,criterion,optimizer_coarse,dataset_loader,5,1)
     #show_img(iter(dataset_loader).next())
-    loss = train_fine(fine_net,coarse_net,criterion,optimizer_fine,5,1)
+    #loss = train_fine(fine_net,coarse_net,criterion,optimizer_fine,dataset_loader,5,1)
     
     
 if __name__ == "__main__":
